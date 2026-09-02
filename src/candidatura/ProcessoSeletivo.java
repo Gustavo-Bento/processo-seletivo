@@ -3,9 +3,34 @@ package candidatura;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Simula um processo seletivo de candidatos, cobrindo três etapas:
+ * <ol>
+ *     <li>Tentativa de contato telefônico com cada candidato (com número
+ *     máximo de tentativas);</li>
+ *     <li>Seleção de candidatos com base no salário pretendido em comparação
+ *     a um salário base;</li>
+ *     <li>Impressão da lista de candidatos.</li>
+ * </ol>
+ * <p>
+ * Esta classe tem finalidade didática, exercitando estruturas de repetição
+ * ({@code for}, {@code while}, {@code do-while}), estruturas condicionais e
+ * manipulação de arrays em Java.
+ * </p>
+ *
+ * @author Seu Nome
+ * @version 1.0
+ * @since 2024
+ */
 public class ProcessoSeletivo {
 
-
+    /**
+     * Método principal responsável por iniciar a simulação do processo
+     * seletivo, percorrendo a lista de candidatos e tentando entrar em
+     * contato com cada um deles.
+     *
+     * @param args argumentos de linha de comando (não utilizados neste programa)
+     */
     static void main(String[] args) {
 
         String [] candidatos = {"Rodrigo", "André", "Mariana", "Felipe", "Guilherme", "Lucia", "Fabiana", "João", "Patrícia", "Larissa"};
@@ -14,6 +39,14 @@ public class ProcessoSeletivo {
         }
     }
 
+    /**
+     * Tenta entrar em contato com o candidato informado, realizando até 3
+     * tentativas. A cada tentativa, o resultado é simulado pelo método
+     * {@link #atender()}. O laço é interrompido assim que o contato for
+     * bem-sucedido ou quando o número máximo de tentativas for atingido.
+     *
+     * @param candidato nome do candidato com quem se está tentando contato
+     */
     static void entrandoEmContato(String candidato) {
 
         int tentaivasRealizadas = 1;
@@ -37,10 +70,22 @@ public class ProcessoSeletivo {
         }
     }
 
+    /**
+     * Simula o atendimento (ou não) de uma ligação telefônica, retornando um
+     * resultado aleatório.
+     *
+     * @return {@code true} se a ligação foi "atendida" nesta simulação,
+     *         {@code false} caso contrário
+     */
     static boolean atender(){
         return new Random().nextInt(3) == 1;
     }
 
+    /**
+     * Imprime a lista completa de candidatos de duas formas: primeiro
+     * numerada (informando o índice de cada elemento no array) e, em
+     * seguida, utilizando um laço {@code for-each}.
+     */
     static void imprimirSelecionados(){
 
         String [] candidatos = {"Rodrigo", "André", "Mariana", "Felipe", "Guilherme", "Lucia", "Fabiana", "João", "Patrícia", "Larissa"};
@@ -54,6 +99,13 @@ public class ProcessoSeletivo {
         }
     }
 
+    /**
+     * Percorre a lista de candidatos selecionando até 5 deles, com base na
+     * comparação entre o salário pretendido (simulado por
+     * {@link #valorPretendido()}) e um salário base fixo de R$ 2000,00. O
+     * candidato é selecionado somente se o valor pretendido for menor ou
+     * igual ao salário base.
+     */
     static void selecaoCandidatos(){
         String [] candidatos = {"Rodrigo", "André", "Mariana", "Felipe", "Guilherme", "Lucia", "Fabiana", "João", "Patrícia", "Larissa"};
 
@@ -73,11 +125,25 @@ public class ProcessoSeletivo {
         }
     }
 
+    /**
+     * Simula o valor de salário pretendido por um candidato, gerando um
+     * número aleatório entre 1800,00 e 2200,00, arredondado para duas casas
+     * decimais.
+     *
+     * @return o valor de salário pretendido simulado
+     */
     static double valorPretendido(){
         return Math.round(ThreadLocalRandom.current().nextDouble(1800, 2200) * 100.0) / 100.0;
     }
 
-
+    /**
+     * Compara o salário pretendido informado com o salário base da vaga e
+     * imprime a orientação correspondente: ligar para o candidato, ligar com
+     * contraproposta, ou aguardar o resultado dos demais candidatos.
+     *
+     * @param salarioPretendido valor de salário pretendido pelo candidato,
+     *                          a ser comparado com o salário base
+     */
     static void analisarCandidato(double salarioPretendido) {
         double salarioBase = 2000.0;
 
