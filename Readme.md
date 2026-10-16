@@ -14,7 +14,7 @@ Todo o comportamento "aleatório" (se o candidato atende a ligação, e qual sal
 
 ## 🗂️ Estrutura do projeto
 
-```
+```dos
 ProcessoSeletivo/
 ├── src/
 │   └── candidatura/
@@ -67,10 +67,34 @@ Depois, é só abrir `javadoc/index.html` no navegador.
 - Geração de números aleatórios com `Random` e `ThreadLocalRandom`
 - Documentação de código com Javadoc
 
-## 🚀 Próximos passos (sugestões de evolução)
+## 🚀 Infraestrutura AWS com CloudFormation
 
-- Corrigir o modificador de acesso do `main` (`public static void main`)
-- Corrigir o typo `tentaivasRealizadas` → `tentativasRealizadas`
-- Extrair a lista de candidatos para um único local (hoje ela é repetida em `main`, `imprimirSelecionados` e `selecaoCandidatos`)
-- Transformar `Candidato` em uma classe própria (nome + salário pretendido), como exercício de POO
-- Escrever testes unitários para os métodos de seleção e análise
+Este projeto agora conta com um template de infraestrutura em AWS CloudFormation, localizado em infra/cloudformation.json.
+O objetivo é provisionar automaticamente os recursos necessários para rodar a aplicação de processo seletivo.
+
+### 📊 Diagrama da Arquitetura
+
+```mermaid
+graph TD
+A[CloudFormation Stack] --> B[VPC]
+B --> C[Subnets]
+C --> D[Security Groups]
+D --> E[EC2 Instance]
+E --> F[Application Load Balancer]
+F --> G[Target Group]
+G --> H[Auto Scaling Group]
+H --> I[RDS Database]
+I --> J[Parameter Store - Secrets]
+```
+
+### 📝 Deploy na AWS
+
+1. Acesse o console da AWS e vá até CloudFormation.
+2. Clique em Create stack → With new resources (standard).
+3. Em Template source, selecione Upload a template file.
+4. Faça upload do arquivo infra/cloudformation.json.
+5. Clique em Next e configure os parâmetros (nome da stack, credenciais, etc.).
+6. Continue até a etapa final e clique em Create stack.
+7. Aguarde a criação dos recursos (VPC, Subnet, Security Group, EC2 e RDS).
+
+Após o deploy, a aplicação poderá ser acessada via a instância EC2 ou balanceador de carga configurado.
