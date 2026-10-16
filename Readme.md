@@ -19,6 +19,8 @@ ProcessoSeletivo/
 ├── src/
 │   └── candidatura/
 │       └── ProcessoSeletivo.java
+└── infra/         
+    └── cloudformation.json
 └── javadoc/          # documentação gerada em HTML
     └── index.html
 ```
