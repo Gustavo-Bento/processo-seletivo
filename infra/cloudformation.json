@@ -1,0 +1,64 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Infraestrutura para projeto de processo seletivo",
+  "Resources": {
+    "AppVPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsSupport": true,
+        "EnableDnsHostnames": true,
+        "Tags": [{ "Key": "Name", "Value": "ProcessoSeletivoVPC" }]
+      }
+    },
+    "AppSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": { "Ref": "AppVPC" },
+        "CidrBlock": "10.0.1.0/24",
+        "AvailabilityZone": "us-east-1a",
+        "Tags": [{ "Key": "Name", "Value": "ProcessoSeletivoSubnet" }]
+      }
+    },
+    "AppSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Permitir acesso HTTP e SSH",
+        "VpcId": { "Ref": "AppVPC" },
+        "SecurityGroupIngress": [
+          { "IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "CidrIp": "0.0.0.0/0" },
+          { "IpProtocol": "tcp", "FromPort": 80, "ToPort": 80, "CidrIp": "0.0.0.0/0" }
+        ]
+      }
+    },
+    "AppEC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": "t2.micro",
+        "ImageId": "ami-0c55b159cbfafe1f0",
+        "SubnetId": { "Ref": "AppSubnet" },
+        "SecurityGroupIds": [{ "Ref": "AppSecurityGroup" }],
+        "Tags": [{ "Key": "Name", "Value": "ProcessoSeletivoEC2" }]
+      }
+    },
+    "AppRDSInstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBInstanceClass": "db.t3.micro",
+        "Engine": "mysql",
+        "MasterUsername": "admin",
+        "MasterUserPassword": "SenhaForte123!",
+        "AllocatedStorage": "20",
+        "VPCSecurityGroups": [{ "Ref": "AppSecurityGroup" }],
+        "DBSubnetGroupName": { "Ref": "AppSubnetGroup" }
+      }
+    },
+    "AppSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets para RDS",
+        "SubnetIds": [{ "Ref": "AppSubnet" }]
+      }
+    }
+  }
+}
